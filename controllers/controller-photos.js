@@ -20,11 +20,21 @@ pool.connect((err) => {
 module.exports = {
     getDataPhotos(req,res){
         const request = req.params
-        limit_page = (request.page-1) * 20
-        const sql = `SELECT * FROM photos WHERE albumId = '${request.albumId}' LIMIT ${limit_page},20`
-        pool.query(sql,(err,result) =>{
+        limitBy = 20
+        limitPage = (request.page-1) * limitBy
+        const sqlPagination = `SELECT count(*) as numRows FROM photos WHERE albumId = ${request.albumId}`
+        pool.query(sqlPagination, (err,resultPagination) => {
             if (err) throw err
-            res.send(result)
+            const sql = `SELECT * FROM photos WHERE albumId = ${request.albumId} LIMIT ${limitPage},20`
+            const totalPage = Math.round(resultPagination[0].numRows/limitBy)
+            pool.query(sql,(err,result) =>{
+                if (err) throw err
+                res.send({
+                    page:parseInt(request.page),
+                    totalPage:totalPage,
+                    data:result
+                })
+            })
         })
     },
     getDataPhotosByID(req,res){
@@ -37,36 +47,29 @@ module.exports = {
     },
     addDataPhotos(req,res){
         const request = req.body
-        pool.query(`INSERT INTO photos
-                (albumId,
-                title,
-                url,
-                thumbnailUrl)
-                values(
-                    '${request.albumId}',
-                    '${request.title}',
-                    '${request.url}',
-                    '${request.thumbnailUrl}')`,(err,result) =>{
+        const sql = `INSERT INTO photos
+        (albumId,
+        title,
+        url,
+        thumbnailUrl)
+        values(
+            '${request.albumId}',
+            '${request.title}',
+            '${request.url}',
+            '${request.thumbnailUrl}')`
+        pool.query(sql,(err,result) =>{
                         if (err) throw err
                         res.send(result)
                     })
     },
     editDataPhotos(req,res){
         const request = req.body
-        // pool.query(`UPDATE photos SET
-        //                 albumId = '${request.id}',
-        //                 title = '${request.title}',
-        //                 url = '${request.url}',
-        //                 thumbnailUrl = '${request.thumbnailUrl}'
-        //             WHERE id = ${request.id}`,(err,result) =>{
-        //                     if (err) throw err
-        //                     res.send(result)
-        //                 })
         for (const [key,value] of Object.entries(request)){
             if( key !== 'id') {
-                pool.query(`UPDATE photos
+                const sql = `UPDATE photos
                     SET ${key} = '${value}'
-                    WHERE id = ${request.id}`,(err,result) => {
+                    WHERE id = ${request.id}`
+                pool.query(sql,(err,result) => {
                         if(err) throw err
                         console.log(result)
                     })
@@ -77,9 +80,10 @@ module.exports = {
     },
     deleteDataPhotos(req,res){
         const request = req.body
-        pool.query(`DELETE FROM
-                        photos
-                    WHERE id = ${request.id}`,(err,result) => {
+        const sql = `DELETE FROM
+                photos
+            WHERE id = ${request.id}`
+        pool.query(sql,(err,result) => {
                         if (err) throw err;
                         res.send(result)
                     })
