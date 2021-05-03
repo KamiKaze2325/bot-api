@@ -3,7 +3,8 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "serve": "nodemon . app.js",
+        "serve": "nodemon app.js",
+        "seed":"node data-seeder.js",
         "dev": "nodemon -w . app.js",
         "test": "mocha"
     },
