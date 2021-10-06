@@ -2,9 +2,10 @@
     "name": "bumi-ai-back-end",
     "version": "0.1.0",
     "private": true,
+    "type": "module",
     "scripts": {
         "serve": "nodemon app.js",
-        "seed":"node data-seeder.js",
+        "seed": "node data-seeder.js",
         "dev": "nodemon -w . app.js",
         "test": "mocha"
     },
@@ -13,12 +14,19 @@
         "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "express-validator": "^6.10.1",
+        "module-alias": "^2.2.2",
         "mysql": "^2.18.1",
         "node-fetch": "^2.6.1"
+    },
+    "_moduleAliases": {
+        "@src" : "src"
     },
     "devDependencies": {
         "chai": "^3.5.0",
         "chai-http": "^2.0.1",
+        "eslint": "^7.32.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-plugin-import": "^2.24.2",
         "mocha": "^2.4.5",
         "nodemon": "^2.0.7"
     }
