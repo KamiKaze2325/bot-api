@@ -3,6 +3,7 @@ import { botWa } from '../controllers/index.js';
 
 const router = express.Router();
 
-router.get('/bot-wa/', botWa.indexPage);
+router.get('/', botWa.indexPage);
+router.post('/upload-photo', botWa.uploadPhoto);
 
 export default router;
