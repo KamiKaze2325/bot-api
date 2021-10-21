@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/', appRoute);
+app.use('/api', appRoute);
 
 app.listen(process.env.SERVE_PORT, () => {
   console.log(`Server Berjalan pada port : ${process.env.SERVE_PORT}`);
