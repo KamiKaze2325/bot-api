@@ -9,6 +9,7 @@ const indexPage = (req, res) => {
 
 const uploadPhoto = async (req, res) => {
   const { base64 } = req.body;
+  console.log(base64);
   const { fileName } = await convertBase64(base64)
   res.send({
     fileName
