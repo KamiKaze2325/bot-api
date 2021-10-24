@@ -13,6 +13,6 @@ app.use(express.json({limit: 52428800}));
 
 app.use('/api', appRoute);
 
-app.listen(process.env.SERVE_PORT, () => {
+app.listen(process.env.SERVE_PORT | 3000, () => {
   console.log(`Server Berjalan pada port : ${process.env.SERVE_PORT}`);
 });
