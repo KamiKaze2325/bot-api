@@ -39,7 +39,7 @@ const downloadFile = (req, res) => {
                       if (err) throw err;
                   });
               }
-          ,(5*60)*1000)
+          ,(10*60)*1000)
       } catch (error) {
           console.error(error)
       }
